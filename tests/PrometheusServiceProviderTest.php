@@ -1,21 +1,21 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace Arquivei\LaravelPrometheusExporter\Tests;
+namespace TrueIfNotFalse\LumenPrometheusExporter\Tests;
 
-use Arquivei\LaravelPrometheusExporter\PrometheusExporter;
-use Arquivei\LaravelPrometheusExporter\PrometheusServiceProvider;
-use Arquivei\LaravelPrometheusExporter\StorageAdapterFactory;
 use Orchestra\Testbench\TestCase;
 use Prometheus\Storage\Adapter;
+use TrueIfNotFalse\LumenPrometheusExporter\PrometheusExporter;
+use TrueIfNotFalse\LumenPrometheusExporter\PrometheusServiceProvider;
+use TrueIfNotFalse\LumenPrometheusExporter\StorageAdapterFactory;
 
 /**
- * @covers \Arquivei\LaravelPrometheusExporter\PrometheusServiceProvider<extended>
+ * @covers \TrueIfNotFalse\LumenPrometheusExporter\PrometheusServiceProvider<extended>
  */
 class PrometheusServiceProviderTest extends TestCase
 {
-    public function testServiceProvider() : void
+    public function testServiceProvider(): void
     {
         $this->assertInstanceOf(Adapter::class, $this->app[Adapter::class]);
         $this->assertInstanceOf(PrometheusExporter::class, $this->app[PrometheusExporter::class]);
@@ -29,7 +29,7 @@ class PrometheusServiceProviderTest extends TestCase
         $router = $this->app['router'];
         $this->assertNotEmpty($router->get('metrics'));
 
-        /* @var \Illuminate\Support\Facades\Config $config  */
+        /* @var \Illuminate\Support\Facades\Config $config */
         $config = $this->app['config'];
         $this->assertTrue($config->get('prometheus.metrics_route_enabled'));
         $this->assertEmpty($config->get('prometheus.metrics_route_middleware'));
@@ -37,7 +37,7 @@ class PrometheusServiceProviderTest extends TestCase
         $this->assertEquals('memory', $config->get('prometheus.storage_adapter'));
     }
 
-    protected function getPackageProviders($app) : array
+    protected function getPackageProviders($app): array
     {
         return [PrometheusServiceProvider::class];
     }

@@ -1,8 +1,8 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace Arquivei\LaravelPrometheusExporter;
+namespace TrueIfNotFalse\LumenPrometheusExporter;
 
 interface CollectorInterface
 {
@@ -11,7 +11,7 @@ interface CollectorInterface
      *
      * @return string
      */
-    public function getName() : string;
+    public function getName(): string;
 
     /**
      * Register all metrics associated with the collector.
@@ -24,7 +24,7 @@ interface CollectorInterface
      *
      * @param PrometheusExporter $exporter
      */
-    public function registerMetrics(PrometheusExporter $exporter) : void;
+    public function registerMetrics(PrometheusExporter $exporter): void;
 
     /**
      * Collect metrics data, if need be, before exporting.
@@ -32,5 +32,5 @@ interface CollectorInterface
      * As an example, this may be used to perform time consuming database queries and set the value of a counter
      * or gauge.
      */
-    public function collect() : void;
+    public function collect(): void;
 }

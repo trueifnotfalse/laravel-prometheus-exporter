@@ -1,19 +1,19 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace Arquivei\LaravelPrometheusExporter\Tests;
+namespace TrueIfNotFalse\LumenPrometheusExporter\Tests;
 
-use Illuminate\Routing\ResponseFactory;
 use Illuminate\Http\Response;
+use Illuminate\Routing\ResponseFactory;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Prometheus\RenderTextFormat;
-use Arquivei\LaravelPrometheusExporter\MetricsController;
-use Arquivei\LaravelPrometheusExporter\PrometheusExporter;
+use TrueIfNotFalse\LumenPrometheusExporter\MetricsController;
+use TrueIfNotFalse\LumenPrometheusExporter\PrometheusExporter;
 
 /**
- * @covers \Arquivei\LaravelPrometheusExporter\MetricsController<extended>
+ * @covers \TrueIfNotFalse\LumenPrometheusExporter\MetricsController<extended>
  */
 class MetricsControllerTest extends TestCase
 {
@@ -32,29 +32,29 @@ class MetricsControllerTest extends TestCase
      */
     private $controller;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->responseFactory = Mockery::mock(ResponseFactory::class);
-        $this->exporter = Mockery::mock(PrometheusExporter::class);
-        $this->controller = new MetricsController($this->responseFactory, $this->exporter);
+        $this->exporter        = Mockery::mock(PrometheusExporter::class);
+        $this->controller      = new MetricsController($this->responseFactory, $this->exporter);
     }
 
-    public function testGetMetrics() : void
+    public function testGetMetrics(): void
     {
         $mockResponse = Mockery::mock(Response::class);
         $this->responseFactory->shouldReceive('make')
-            ->once()
-            ->withArgs([
-                "\n",
-                200,
-                ['Content-Type' => RenderTextFormat::MIME_TYPE],
-            ])
-            ->andReturn($mockResponse);
+                              ->once()
+                              ->withArgs([
+                                  "\n",
+                                  200,
+                                  ['Content-Type' => RenderTextFormat::MIME_TYPE],
+                              ])
+                              ->andReturn($mockResponse);
         $this->exporter->shouldReceive('export')
-            ->once()
-            ->andReturn([]);
+                       ->once()
+                       ->andReturn([]);
 
         $actualResponse = $this->controller->getMetrics();
         $this->assertSame($mockResponse, $actualResponse);

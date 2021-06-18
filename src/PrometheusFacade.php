@@ -1,8 +1,8 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace Arquivei\LaravelPrometheusExporter;
+namespace TrueIfNotFalse\LumenPrometheusExporter;
 
 use Illuminate\Support\Facades\Facade;
 
@@ -13,7 +13,7 @@ class PrometheusFacade extends Facade
      *
      * @return string
      */
-    protected static function getFacadeAccessor() : string
+    protected static function getFacadeAccessor(): string
     {
         return 'prometheus';
     }

@@ -1,8 +1,7 @@
 <?php
 
-namespace Arquivei\LaravelPrometheusExporter;
+namespace TrueIfNotFalse\LumenPrometheusExporter;
 
-use Closure;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\RouteCollection;
 use Illuminate\Support\Facades\Route as RouteFacade;
@@ -15,7 +14,7 @@ class PrometheusLumenRouteMiddleware extends PrometheusLaravelRouteMiddleware
     public function getMatchedRoute(Request $request)
     {
         $routeCollection = new RouteCollection();
-        $routes = RouteFacade::getRoutes();
+        $routes          = RouteFacade::getRoutes();
 
         foreach ($routes as $route) {
             $routeCollection->add(
@@ -26,6 +25,7 @@ class PrometheusLumenRouteMiddleware extends PrometheusLaravelRouteMiddleware
                 )
             );
         }
+
         return $routeCollection->match($request);
     }
 }

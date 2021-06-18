@@ -1,6 +1,6 @@
 <?php
 
-namespace Arquivei\LaravelPrometheusExporter;
+namespace TrueIfNotFalse\LumenPrometheusExporter;
 
 use Closure;
 use Illuminate\Support\Facades\Route as RouteFacade;
@@ -18,7 +18,7 @@ class PrometheusLaravelRouteMiddleware
      *
      * @return Response
      */
-    public function handle(Request $request, Closure $next) : Response
+    public function handle(Request $request, Closure $next): Response
     {
         $matchedRoute = $this->getMatchedRoute($request);
 
@@ -27,7 +27,7 @@ class PrometheusLaravelRouteMiddleware
         $response = $next($request);
         $duration = microtime(true) - $start;
         /** @var PrometheusExporter $exporter */
-        $exporter = app('prometheus');
+        $exporter  = app('prometheus');
         $histogram = $exporter->getOrRegisterHistogram(
             'response_time_seconds',
             'It observes response time.',
@@ -47,12 +47,14 @@ class PrometheusLaravelRouteMiddleware
                 $response->getStatusCode(),
             ]
         );
+
         return $response;
     }
 
     public function getMatchedRoute(Request $request)
     {
         $routeCollection = RouteFacade::getRoutes();
+
         return $routeCollection->match($request);
     }
 }

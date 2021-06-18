@@ -1,8 +1,8 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace Arquivei\LaravelPrometheusExporter;
+namespace TrueIfNotFalse\LumenPrometheusExporter;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
@@ -15,7 +15,7 @@ class PrometheusServiceProvider extends ServiceProvider
     /**
      * Perform post-registration booting of services.
      */
-    public function boot() : void
+    public function boot(): void
     {
         $this->publishes([
             __DIR__ . '/../config/prometheus.php' => $this->configPath('prometheus.php'),
@@ -26,18 +26,19 @@ class PrometheusServiceProvider extends ServiceProvider
     /**
      * Register bindings in the container.
      */
-    public function register() : void
+    public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/prometheus.php', 'prometheus');
 
         $this->app->singleton(PrometheusExporter::class, function ($app) {
-            $adapter = $app['prometheus.storage_adapter'];
+            $adapter    = $app['prometheus.storage_adapter'];
             $prometheus = new CollectorRegistry($adapter, true);
-            $exporter = new PrometheusExporter(config('prometheus.namespace'), $prometheus);
+            $exporter   = new PrometheusExporter(config('prometheus.namespace'), $prometheus);
             foreach (config('prometheus.collectors') as $collectorClass) {
                 $collector = $this->app->make($collectorClass);
                 $exporter->registerCollector($collector);
             }
+
             return $exporter;
         });
         $this->app->alias(PrometheusExporter::class, 'prometheus');
@@ -49,9 +50,9 @@ class PrometheusServiceProvider extends ServiceProvider
         $this->app->bind(Adapter::class, function ($app) {
             /* @var StorageAdapterFactory $factory */
             $factory = $app['prometheus.storage_adapter_factory'];
-            $driver = config('prometheus.storage_adapter');
+            $driver  = config('prometheus.storage_adapter');
             $configs = config('prometheus.storage_adapters');
-            $config = Arr::get($configs, $driver, []);
+            $config  = Arr::get($configs, $driver, []);
 
             return $factory->make($driver, $config);
         });
@@ -63,7 +64,7 @@ class PrometheusServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    public function provides() : array
+    public function provides(): array
     {
         return [
             'prometheus',
@@ -74,7 +75,7 @@ class PrometheusServiceProvider extends ServiceProvider
 
     private function loadRoutes()
     {
-        if (!config('prometheus.metrics_route_enabled')) {
+        if (! config('prometheus.metrics_route_enabled')) {
             return;
         }
 
@@ -86,7 +87,7 @@ class PrometheusServiceProvider extends ServiceProvider
             $router->get(
                 config('prometheus.metrics_route_path'),
                 [
-                    'as' => 'metrics',
+                    'as'   => 'metrics',
                     'uses' => MetricsController::class . '@getMetrics',
                 ]
             );
@@ -98,7 +99,7 @@ class PrometheusServiceProvider extends ServiceProvider
         }
     }
 
-    private function configPath($path) : string
+    private function configPath($path): string
     {
         return $this->app->basePath() . ($path ? DIRECTORY_SEPARATOR . $path : '');
     }

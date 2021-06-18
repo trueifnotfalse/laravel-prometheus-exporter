@@ -1,4 +1,4 @@
-# Laravel (and Lumen) Prometheus Exporter
+# Lumen Prometheus Exporter
 
 A prometheus exporter package for Laravel and Lumen.
 
@@ -10,46 +10,25 @@ Prometheus is a time-series database with a UI and sophisticated querying langua
 
 This package is a wrapper bridging [jimdo/prometheus_client_php](https://github.com/jimdo/prometheus_client_php) into Laravel and Lumen.
 
-## Example
-
-Head to [examples/lumen-app](https://github.com/arquivei/laravel-prometheus-exporter/tree/example-application/examples/lumen-app)
-to check out our awesome example application.
-To get it you'll have to clone the [Laravel Prometheus Exporter](https://github.com/arquivei/laravel-prometheus-exporter/) repo, as the example
-is not included when downloaded from composer.
-
-The example is a full project containing it's own `README.md` so you can check the
-library's functionality and the way it's intended to be used.
-
-
 ## Installation
-
-Add the repository to composer.json
-```composer.json
-"repositories": [
-  {
-    "type": "vcs",
-    "url": "https://github.com/arquivei/laravel-prometheus-exporter"
-  }
-],
-```
 
 Install the package via composer
 ```bash
-composer require arquivei/laravel-prometheus-exporter
+composer require trueifnotfalse/lumen-prometheus-exporter
 ```
 
 After that you may enable facades and register the facade in your application's `bootstrap/app.php`
 ```php
 $userAliases = [
     // ...
-    Arquivei\LaravelPrometheusExporter\PrometheusFacade::class => 'Prometheus',
+    TrueIfNotFalse\LumenPrometheusExporter\PrometheusFacade::class => 'Prometheus',
 ];
 $app->withFacades(true, $userAliases);
 ```
 
 Then you should register the service provider in `bootstrap/app.php`
 ```php
-$app->register(Arquivei\LaravelPrometheusExporter\PrometheusServiceProvider::class);
+$app->register(TrueIfNotFalse\LumenPrometheusExporter\PrometheusServiceProvider::class);
 ```
 
 Please see below for instructions on how to enable metrics on Application routes, Guzzle calls and SQL queries.
@@ -78,7 +57,7 @@ To customize the configuration values you can either override the environment va
 to `config/prometheus.php`, edit it and use it in your application as follows:
 ```php
 $app->loadComponent('prometheus', [
-    Arquivei\LaravelPrometheusExporter\PrometheusServiceProvider::class
+    TrueIfNotFalse\LumenPrometheusExporter\PrometheusServiceProvider::class
 ]);
 ```
 
@@ -94,7 +73,7 @@ In order to observe metrics in application routes (the time between a request an
 you should register the following middleware in your application's `bootstrap/app.php`:
 ```php
 $app->middleware([
-    Arquivei\LaravelPrometheusExporter\RouteMiddleware::class,
+    TrueIfNotFalse\LumenPrometheusExporter\RouteMiddleware::class,
 ]);
 ```
 
@@ -110,7 +89,7 @@ The labels exported are
 
 To observe Guzzle metrics, you should register the following provider in `bootstrap/app.php`:
 ```php
-$app->register(Arquivei\LaravelPrometheusExporter\GuzzleServiceProvider::class);
+$app->register(TrueIfNotFalse\LumenPrometheusExporter\GuzzleServiceProvider::class);
 ```
 
 The labels exported are
@@ -125,7 +104,7 @@ The labels exported are
 
 To observe SQL metrics, you should register the following provider in `bootstrap/app.php`:
 ```php
-$app->register(Arquivei\LaravelPrometheusExporter\DatabaseServiceProvider::class);
+$app->register(TrueIfNotFalse\LumenPrometheusExporter\DatabaseServiceProvider::class);
 ```
 
 The labels exported are
@@ -175,7 +154,7 @@ This is an example usage for a Lumen application
 
 ```php
 // retrieve the exporter (you can also use app('prometheus') or Prometheus::getFacadeRoot())
-$exporter = app(\Arquivei\LaravelPrometheusExporter\PrometheusExporter::class);
+$exporter = app(\TrueIfNotFalse\LumenPrometheusExporter\PrometheusExporter::class);
 
 // register a new collector
 $collector = new \My\New\Collector();
@@ -262,7 +241,7 @@ This is an example collector implementation:
 
 declare(strict_types = 1);
 
-namespace Arquivei\LaravelPrometheusExporter;
+namespace App\Metrics;
 
 use Prometheus\Gauge;
 

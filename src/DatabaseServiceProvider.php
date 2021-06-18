@@ -1,28 +1,28 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace Arquivei\LaravelPrometheusExporter;
+namespace TrueIfNotFalse\LumenPrometheusExporter;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\ServiceProvider;
 
 class DatabaseServiceProvider extends ServiceProvider
 {
     /**
      * Perform post-registration booting of services.
      */
-    public function boot() : void
+    public function boot(): void
     {
         DB::listen(function ($query) {
             $querySql = '[omitted]';
-            $type = strtoupper(strtok((string)$query->sql, ' '));
+            $type     = strtoupper(strtok((string)$query->sql, ' '));
             if (config('prometheus.collect_full_sql_query')) {
                 $querySql = $this->cleanupSqlString((string)$query->sql);
             }
             $labels = array_values(array_filter([
                 $querySql,
-                $type
+                $type,
             ]));
             $this->app->get('prometheus.sql.histogram')->observe($query->time, $labels);
         });
@@ -33,7 +33,7 @@ class DatabaseServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register() : void
+    public function register(): void
     {
         $this->app->singleton('prometheus.sql.histogram', function ($app) {
             return $app['prometheus']->getOrRegisterHistogram(
@@ -41,7 +41,7 @@ class DatabaseServiceProvider extends ServiceProvider
                 'SQL query duration histogram',
                 array_values(array_filter([
                     'query',
-                    'query_type'
+                    'query_type',
                 ])),
                 config('prometheus.sql_buckets') ?? null
             );
@@ -53,7 +53,7 @@ class DatabaseServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    public function provides() : array
+    public function provides(): array
     {
         return [
             'prometheus.sql.histogram',

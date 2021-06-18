@@ -1,6 +1,6 @@
 {
-    "name": "arquivei/laravel-prometheus-exporter",
-    "description": "A Prometheus exporter for Laravel and Lumen",
+    "name": "trueifnotfalse/lumen-prometheus-exporter",
+    "description": "A Prometheus exporter for Lumen",
     "license": "MIT",
     "authors": [
         {
@@ -15,17 +15,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Arquivei\\LaravelPrometheusExporter\\": "src/"
+            "TrueIfNotFalse\\LumenPrometheusExporter\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Arquivei\\LaravelPrometheusExporter\\Tests\\": "tests/"
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
+            "TrueIfNotFalse\\LumenPrometheusExporter\\Tests\\": "tests/"
         }
     },
     "require-dev": {

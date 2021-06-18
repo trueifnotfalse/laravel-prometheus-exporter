@@ -1,12 +1,9 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace Arquivei\LaravelPrometheusExporter\Tests;
+namespace TrueIfNotFalse\LumenPrometheusExporter\Tests;
 
-use Arquivei\LaravelPrometheusExporter\GuzzleMiddleware;
-use Arquivei\LaravelPrometheusExporter\GuzzleServiceProvider;
-use Arquivei\LaravelPrometheusExporter\PrometheusServiceProvider;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\CurlHandler;
 use GuzzleHttp\Handler\MockHandler;
@@ -14,13 +11,16 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Orchestra\Testbench\TestCase;
 use Prometheus\Histogram;
+use TrueIfNotFalse\LumenPrometheusExporter\GuzzleMiddleware;
+use TrueIfNotFalse\LumenPrometheusExporter\GuzzleServiceProvider;
+use TrueIfNotFalse\LumenPrometheusExporter\PrometheusServiceProvider;
 
 /**
- * @covers \Arquivei\LaravelPrometheusExporter\GuzzleServiceProvider<extended>
+ * @covers \TrueIfNotFalse\LumenPrometheusExporter\GuzzleServiceProvider<extended>
  */
 class GuzzleServiceProviderTest extends TestCase
 {
-    public function testServiceProvidersShouldHaveCorrectClasses() : void
+    public function testServiceProvidersShouldHaveCorrectClasses(): void
     {
         $this->assertInstanceOf(Client::class, $this->app->get('prometheus.guzzle.client'));
         $this->assertInstanceOf(CurlHandler::class, $this->app->get('prometheus.guzzle.handler'));
@@ -34,7 +34,11 @@ class GuzzleServiceProviderTest extends TestCase
         /* @var \Prometheus\Histogram $histogram */
         $histogram = $this->app->get('prometheus.guzzle.client.histogram');
         $this->assertInstanceOf(Histogram::class, $histogram);
-        $this->assertSame(['method', 'external_endpoint', 'status_code'], $histogram->getLabelNames());
+        $this->assertSame([
+            'method',
+            'external_endpoint',
+            'status_code',
+        ], $histogram->getLabelNames());
         $this->assertSame('app_guzzle_response_duration', $histogram->getName());
         $this->assertSame('Guzzle response duration histogram', $histogram->getHelp());
     }
@@ -47,15 +51,15 @@ class GuzzleServiceProviderTest extends TestCase
         });
         /* @var Client $guzzleClient */
         $guzzleClient = $this->app->get('prometheus.guzzle.client');
-        $response = $guzzleClient->request('GET', '/');
+        $response     = $guzzleClient->request('GET', '/');
         $this->assertNotEmpty($response);
     }
 
-    protected function getPackageProviders($app) : array
+    protected function getPackageProviders($app): array
     {
         return [
             PrometheusServiceProvider::class,
-            GuzzleServiceProvider::class
+            GuzzleServiceProvider::class,
         ];
     }
 }

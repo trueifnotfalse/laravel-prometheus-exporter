@@ -1,8 +1,8 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace Arquivei\LaravelPrometheusExporter;
+namespace TrueIfNotFalse\LumenPrometheusExporter;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\CurlHandler;
@@ -16,13 +16,17 @@ class GuzzleServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register() : void
+    public function register(): void
     {
         $this->app->singleton('prometheus.guzzle.client.histogram', function ($app) {
             return $app['prometheus']->getOrRegisterHistogram(
                 'guzzle_response_duration',
                 'Guzzle response duration histogram',
-                ['method', 'external_endpoint', 'status_code'],
+                [
+                    'method',
+                    'external_endpoint',
+                    'status_code',
+                ],
                 config('prometheus.guzzle_buckets') ?? null
             );
         });
@@ -35,6 +39,7 @@ class GuzzleServiceProvider extends ServiceProvider
         $this->app->singleton('prometheus.guzzle.handler-stack', function ($app) {
             $stack = HandlerStack::create($app['prometheus.guzzle.handler']);
             $stack->push($app['prometheus.guzzle.middleware']);
+
             return $stack;
         });
         $this->app->singleton('prometheus.guzzle.client', function ($app) {
@@ -47,7 +52,7 @@ class GuzzleServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    public function provides() : array
+    public function provides(): array
     {
         return [
             'prometheus.guzzle.client',

@@ -1,8 +1,8 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace Arquivei\LaravelPrometheusExporter;
+namespace TrueIfNotFalse\LumenPrometheusExporter;
 
 use InvalidArgumentException;
 use Prometheus\Storage\Adapter;
@@ -27,7 +27,7 @@ class StorageAdapterFactory
      *
      * @return Adapter
      */
-    public function make(string $driver, array $config = []) : Adapter
+    public function make(string $driver, array $config = []): Adapter
     {
         switch ($driver) {
             case 'memory':
@@ -48,10 +48,10 @@ class StorageAdapterFactory
      *
      * @return Redis
      */
-    protected function makeRedisAdapter(array $config) : Redis
+    protected function makeRedisAdapter(array $config): Redis
     {
         if (isset($config['prefix'])) {
-            $prefix = !empty($config['prefix_dynamic']) ? sprintf('%s_%s_', $config['prefix'], $this->hostname) : $config['prefix'];
+            $prefix = ! empty($config['prefix_dynamic']) ? sprintf('%s_%s_', $config['prefix'], $this->hostname) : $config['prefix'];
             Redis::setPrefix($prefix);
         }
 
