@@ -82,21 +82,13 @@ class PrometheusServiceProvider extends ServiceProvider
         $router = $this->app['router'];
 
         /** @var Route $route */
-        $isLumen = mb_strpos($this->app->version(), 'Lumen') !== false;
-        if ($isLumen) {
-            $router->get(
-                config('prometheus.metrics_route_path'),
-                [
-                    'as'   => 'metrics',
-                    'uses' => MetricsController::class . '@getMetrics',
-                ]
-            );
-        } else {
-            $router->get(
-                config('prometheus.metrics_route_path'),
-                MetricsController::class . '@getMetrics'
-            )->name('metrics');
-        }
+        $router->get(
+            config('prometheus.metrics_route_path'),
+            [
+                'as'   => 'metrics',
+                'uses' => MetricsController::class . '@getMetrics',
+            ]
+        );
     }
 
     private function configPath($path): string

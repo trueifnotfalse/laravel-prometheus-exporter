@@ -64,14 +64,14 @@ return [
     'storage_adapters' => [
 
         'redis' => [
-            'host' => env('PROMETHEUS_REDIS_HOST', 'localhost'),
-            'port' => env('PROMETHEUS_REDIS_PORT', 6379),
-            'database' => env('PROMETHEUS_REDIS_DATABASE', 0),
-            'timeout' => env('PROMETHEUS_REDIS_TIMEOUT', 0.1),
-            'read_timeout' => env('PROMETHEUS_REDIS_READ_TIMEOUT', 10),
+            'host'                   => env('PROMETHEUS_REDIS_HOST', 'localhost'),
+            'port'                   => env('PROMETHEUS_REDIS_PORT', 6379),
+            'database'               => env('PROMETHEUS_REDIS_DATABASE', 0),
+            'timeout'                => env('PROMETHEUS_REDIS_TIMEOUT', 0.1),
+            'read_timeout'           => env('PROMETHEUS_REDIS_READ_TIMEOUT', 10),
             'persistent_connections' => env('PROMETHEUS_REDIS_PERSISTENT_CONNECTIONS', false),
-            'prefix' => env('PROMETHEUS_REDIS_PREFIX', 'PROMETHEUS_'),
-            'prefix_dynamic' => env('PROMETHEUS_REDIS_PREFIX_DYNAMIC', true),
+            'prefix'                 => env('PROMETHEUS_REDIS_PREFIX', 'PROMETHEUS_'),
+            'prefix_dynamic'         => env('PROMETHEUS_REDIS_PREFIX_DYNAMIC', true),
         ],
 
     ],
@@ -99,7 +99,7 @@ return [
     'collectors' => [
         // \Your\ExporterClass::class,
     ],
-    
+
     /*
     |--------------------------------------------------------------------------
     | Buckets config
@@ -110,8 +110,8 @@ return [
     | Default value is null.
     |
     */
-    
+
     'routes_buckets' => null,
-    'sql_buckets' => null,
+    'sql_buckets'    => null,
     'guzzle_buckets' => null,
 ];
